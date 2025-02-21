@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Form</title>
+    
+    <style>
+        :root {
+    --primary-gradient: linear-gradient(92.7deg, rgba(245,212,212,1) 8.5%, rgba(252,251,224,1) 90.2%);
+    --form-gradient: linear-gradient(to right, #f5d4d4, #fcfbe0);
+    --primary-font: "Lora", serif;
+    --transition-speed: 0.5s;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-image: url('premium_vector-1726232485459-07d4ba3e9048 copy.avif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.container {
+    width: 800px;
+    height: 450px;
+    display: flex;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    text-align: center;
+    animation: slidefromleft 1s ease forwards;
+    opacity: 0;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+}
+
+.form-container {
+    display: flex;
+    width: 200%;
+    height: 100%;
+    transition: transform var(--transition-speed) ease-in-out;
+}
+
+.left-panel, .right-panel {
+    font-family: var(--primary-font);
+    font-size: 16px;
+    width: 50%;
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+.left-panel {
+    background: transparent;
+    backdrop-filter: blur(8px);
+    color: #bdb3b3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Changed to space-between */
+    align-items: center;
+    text-align: center;
+    padding-top: 50px;
+    padding-bottom: 60px; /* Add padding at bottom */
+}
+
+
+.left-panel h2 {
+    margin: 0 0 15px 0;
+    color: #0a0707;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+    font-size: 32px; /* Increased from default size */
+}
+
+.left-panel p {
+    margin: 0 0 20px 0;
+    font-size: 25px;
+    line-height: 1.6;
+    color: #080707;
+}
+
+.signin-btn {
+    background: rgba(176, 208, 255, 1);
+    border: none;
+    color: #333;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: auto; /* Changed from 15px to auto */
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.signin-btn:hover {
+    /* background: rgba(255, 255, 255, 0.3); */
+    background-color: rgba(27, 58, 87, 0.814);
+    color: #fffbfb;
+    transform: translateY(-2px);
+}
+
+.right-panel {
+    background-color: rgba(27, 58, 87, 0.814);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-group {
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+input {
+    width: 80%;
+    padding: 10px;
+    margin: 6px 0;
+    border: 1px solid rgba(221, 221, 221, 0.8);
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+input:focus {
+    outline: none;
+    background: rgba(176, 208, 255, 1);
+
+    box-shadow: 0 0 5px rgba(245, 212, 212, 0.4);
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.signup-btn, .login-btn {
+    background: rgba(176, 208, 255, 1);
+    color: #333;
+    border: solid 1px rgb(0, 0, 0);
+    padding: 10px 25px;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.signup-btn:hover, .login-btn:hover {
+    background: rgba(176, 208, 255, 1);
+    /* border: solid 1px rgb(0, 0, 0); */
+
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.social-icons {
+    margin-top: 15px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    border-radius: 30px;
+}
+
+.social-icons img {
+    width: 24px;
+    margin: 8px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.social-icons img:hover {
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+.error-message {
+    color: #ff6b6b;
+    font-size: 12px;
+    margin-top: 4px;
+    display: none;
+}
+
+.success-message {
+    color: #51cf66;
+    font-size: 12px;
+    margin-top: 4px;
+    display: none;
+}
+
+h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #000000;
+    /* text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8); */
+}
+
+.right-panel p {
+    font-size: 12px;
+    color: #333;
+    margin: 10px 0;
+    font-weight: 500;
+}
+
+@keyframes slidefromleft {
+    0% {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 850px) {
+    .container {
+        width: 90%;
+        max-width: 800px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        height: 500px;
+    }
+
+    input {
+        width: 90%;
+    }
+
+    .left-panel, .right-panel {
+        padding: 20px;
+    }
+
+    .social-icons img {
+        width: 20px;
+        margin: 6px;
+    }
+}
+
+/* Optional: Add smooth scrolling for the whole page */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Optional: Better form autofill styling */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0.9) inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Optional: Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(245, 212, 212, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(245, 212, 212, 0.8);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(245, 212, 212, 1);
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container" id="formContainer">
+            <div class="left-panel">
+                <h2>Welcome Back!</h2>
+                <p>Sign in & become part of a community where drivers are respected too.</p>
+    
+                <button class="signin-btn" id="toggleButton" onclick="toggleForms()">Don't have an account? Sign up.</button>
+            </div>
+            <div class="right-panel">
+                <form class="signup-form" aria-label="Sign up form" onsubmit="handleSignup(event)">
+                    <h2>Sign In</h2>
+                    <!-- <div class="form-group">
+                        <input type="text" placeholder="Username" required minlength="3" aria-label="Username">
+                    </div> -->
+                    <div class="form-group">
+                        <input type="email" placeholder="Email" required aria-label="Email">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" placeholder="Password" required minlength="8" aria-label="Password">
+                    </div>
+                    <!-- <div class="form-group">
+                        <input type="password" placeholder="Confirm Password" required minlength="8" aria-label="Confirm Password">
+                        <div class="error-message" id="passwordError"></div>
+                    </div> -->
+                    <button type="submit" class="signup-btn">Sign in</button>
+                </form>
+
+                <form class="login-form" aria-label="Sign in form" onsubmit="handleLogin(event)" style="display: none;">
+                    <h2>Sign in</h2>
+                    <div class="form-group">
+                        <input type="email" placeholder="Email" required aria-label="Email">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" placeholder="Password" required aria-label="Password">
+                    </div>
+                    <button type="submit" class="login-btn">Sign in</button>
+                </form>
+
+                <!-- <p>or continue with</p>
+                <div class="social-icons">
+                    <img src="icons8-facebook-logo-48.png" alt="Facebook" loading="lazy">
+                    <img src="download.png" alt="Google" loading="lazy">
+                    <img src="download (1).png" alt="LinkedIn" loading="lazy">
+                    <img src="apple.png" alt="Apple" loading="lazy">
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript remains the same as in the previous version
+        function toggleForms() {
+    // Get the current state
+    const signupForm = document.querySelector('.signup-form');
+    const isSignup = signupForm.style.display !== 'none';
+    
+    if (isSignup) {
+        // If we're on signup form and clicking "Already have an account"
+        window.location.href = 'driver 1.html';
+    } else {
+        // If we're on login form and clicking "Don't have an account"
+        window.location.href = 'signup.html';
+    }
+}
+
+        function handleSignup(event) {
+            event.preventDefault();
+            const form = event.target;
+            const password = form.querySelector('input[type="password"]');
+            const confirmPassword = form.querySelectorAll('input[type="password"]')[1];
+            const errorElement = document.getElementById('passwordError');
+            
+            if (password.value !== confirmPassword.value) {
+                errorElement.textContent = 'Passwords do not match';
+                errorElement.style.display = 'block';
+                return;
+            }
+
+            if (password.value.length < 8) {
+                errorElement.textContent = 'Password must be at least 8 characters long';
+                errorElement.style.display = 'block';
+                return;
+            }
+
+            console.log('Signup successful');
+            errorElement.style.display = 'none';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            console.log('Login attempted');
+        }
+    </script>
+</body>
+</html>
+

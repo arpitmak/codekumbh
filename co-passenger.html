@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Women's Safety Ride-Sharing</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background:rgba(252, 220, 220, 0.697);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+            transition: 0.3s;
+        }
+        .container:hover {
+            transform: scale(1.02);
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin: 15px 0 5px;
+        }
+        .radio-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .radio-group label {
+            font-weight: normal;
+        }
+        button {
+            margin-top: 15px;
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: linear-gradient(to right, #ff5a7f, #ff668c);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Choose Your Ride Preferences</h2>
+        <label>I am:</label>
+        <div class="radio-group">
+            <input type="radio" id="female" name="user-gender" value="female" checked onclick="toggleCoPassengerOption()">
+            <label for="female">Female</label>
+            <input type="radio" id="male" name="user-gender" value="male" onclick="toggleCoPassengerOption()">
+            <label for="male">Male</label>
+        </div>
+        
+        <label>Preferred Co-Passenger Gender:</label>
+        <div class="radio-group" id="co-passenger-options">
+            <input type="radio" id="any" name="co-passenger-gender" value="any" checked>
+            <label for="any">Any</label>
+            <input type="radio" id="female-passenger" name="co-passenger-gender" value="female">
+            <label for="female-passenger">Female</label>
+            <input type="radio" id="male-passenger" name="co-passenger-gender" value="male">
+            <label for="male-passenger">Male</label>
+        </div>
+        <a href="booking1.html">
+        <button onclick="submitPreference()">Confirm Selection</button></a>
+    </div>
+    
+    <script>
+        function toggleCoPassengerOption() {
+            var userGender = document.querySelector('input[name="user-gender"]:checked').value;
+            var coPassengerOptions = document.getElementById("co-passenger-options").querySelectorAll("input");
+            
+            if (userGender === "male") {
+                coPassengerOptions.forEach(option => {
+                    option.disabled = (option.value !== "any");
+                });
+                document.getElementById("any").checked = true;
+            } else {
+                coPassengerOptions.forEach(option => {
+                    option.disabled = false;
+                });
+            }
+        }
+
+        function submitPreference() {
+            var userGender = document.querySelector('input[name="user-gender"]:checked').value;
+            var coPassengerGender = document.querySelector('input[name="co-passenger-gender"]:checked').value;
+            alert("Your preference has been saved!\nUser Gender: " + userGender + "\nCo-Passenger Gender: " + coPassengerGender);
+        }
+        
+        // Initialize on page load
+        toggleCoPassengerOption();
+    </script>
+</body>
+</html>

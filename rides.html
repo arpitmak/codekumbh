@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ride Booking</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background-color: white;
+      padding: 20px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .ride-options {
+      margin-bottom: 20px;
+    }
+
+    .ride-card {
+      display: flex;
+      align-items: center;
+      background-color: #fafafa;
+      padding: 15px;
+      text-align: left;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px; /* Space between each ride option */
+    }
+
+    .ride-card img {
+      width: 100px;
+      height: 75px;
+      object-fit: cover;
+      border-radius: 5px;
+      margin-right: 15px; /* Space between image and text */
+    }
+
+    .ride-card .details {
+      flex-grow: 1;
+    }
+
+    .ride-btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    .ride-btn:hover {
+      background-color: #45a049;
+    }
+
+    .ride-details {
+      text-align: center;
+      display: none;
+    }
+
+    #share-ride {
+      margin-top: 10px;
+      padding: 5px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #1976D2;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Choose Your Ride</h1>
+
+    <div class="ride-options">
+      <div class="ride-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSv0A7goTk42SEZPjUIRx1EpDRDF1cbZGME4w&s" alt="Bike">
+        <div class="details">
+          <h3>Bike</h3>
+          <p>Fare: rs. 90</p>
+        </div>
+        <button class="ride-btn" onclick="selectRide('bike', 90)">Select Bike</button>
+      </div>
+      <div class="ride-card">
+        <img src="data:image/jpeg;base64,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" alt="Auto">
+        <div class="details">
+          <h3>Auto</h3>
+          <p>Fare: Rs. 110</p>
+        </div>
+        <button class="ride-btn" onclick="selectRide('auto', 110)">Select Auto</button>
+      </div>
+      <div class="ride-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0q4ByiaFTlvnMjZcT0MQ9M9v-o4gUOlajRg&s" alt="Cab">
+        <div class="details">
+          <h3>Cab</h3>
+          <p>Fare: RS. 175</p>
+        </div>
+        <button class="ride-btn" onclick="selectRide('cab', 175)">Select Cab</button>
+      </div>
+      <div class="ride-card">
+        <img src="https://www.budget.com/content/dam/cars/xl/2021/ford/2021-ford-expedition-xlt-suv-silver_featured.png" alt="Rental">
+        <div class="details">
+          <h3>Rental</h3>
+          <p>Fare: RS. 25/km </p>
+        </div>
+        <button class="ride-btn" onclick="selectRide('rental', 25/km)">Select Rental</button>
+      </div>
+    </div>
+
+    <div id="ride-details" class="ride-details">
+      <h2>You have selected: <span id="selected-ride">Bike</span></h2>
+      <p>Fare: $<span id="ride-fare">5</span></p>
+      <label for="share-ride">Share your ride with others?</label>
+      <select id="share-ride">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+      <br><br>
+      <a href="co-passenger.html">
+      <button onclick="bookRide()">Book Ride</button></a>
+    </div>
+  </div>
+
+  <script>
+    let selectedRide = '';
+    let fare = 0;
+
+    function selectRide(rideType, rideFare) {
+      selectedRide = rideType;
+      fare = rideFare;
+      document.getElementById('selected-ride').textContent = capitalizeFirstLetter(rideType);
+      document.getElementById('ride-fare').textContent = rideFare;
+      document.getElementById('ride-details').style.display = 'block';  // Show the ride details section
+    }
+
+    function capitalizeFirstLetter(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    function bookRide() {
+      const shareRide = document.getElementById('share-ride').value;
+      const message = shareRide === 'yes' 
+        ? `You have booked a ${selectedRide} for ${fare} and you are sharing the ride with others.`
+        : `You have booked a ${selectedRide} for $${fare} and will be riding alone.`;
+
+      alert(message);
+    }
+  </script>
+
+</body>
+</html>

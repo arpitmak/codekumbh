@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ride Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .map-container {
+            flex: 1;
+            height: 500px;
+            position: relative;
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .ride-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-left: 30px;
+            padding-right: 30px;
+            display: none; /* Initially hidden */
+        }
+        .loading {
+            text-align: center;
+            font-size: 20px;
+            color: #007BFF;
+        }
+        .ride-info {
+            margin-bottom: 20px;
+        }
+        .ride-info h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+        .ride-info p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .button.cancel {
+            background-color: #FF4136;
+        }
+        .ride-actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+        /* Fluctuating arrow animation */
+        .arrow {
+            display: block;
+            text-align: center;
+            font-size: 40px;
+            margin: 10px 0;
+            animation: arrowFluctuate 1.5s infinite ease-in-out;
+        }
+        @keyframes arrowFluctuate {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        .location-label {
+            font-weight: bold;
+            color: #333;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .driver-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        .driver-info {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div class="container" id="loadingContainer">
+    <div class="loading">
+        <p>Please wait, finding a nearby driver...</p>
+    </div>
+</div>
+
+<!-- Ride Details Screen -->
+<div class="container" id="detailsContainer" style="display: none;">
+    <div class="map-container" id="mapContainer">
+        <div id="map"></div>
+    </div>
+
+    <div class="ride-details" id="rideDetails">
+        <div class="loading" id="loadingText" style="display: none;">
+            Please wait, finding a nearby driver...
+        </div>
+
+        <div class="ride-info driver-info">
+            <img src="https://i.pinimg.com/736x/11/ea/53/11ea53f198f4386fbeded15fa3535bee.jpg" alt="Driver Photo" class="driver-photo">
+            <div>
+                <h3 id="driverName">John Doe</h3>
+                <p id="driverRating">4.8 ⭐</p>
+            </div>
+        </div>
+
+        <div class="ride-info">
+            <h3><span class="location-label">Pickup Location:</span></h3>
+            <p id="pickupLocation">VFJ Jbp</p>
+        </div>
+
+        <!-- Fluctuating arrow between Pickup and Dropoff -->
+        <div class="arrow">&#8595;</div> <!-- Downward arrow -->
+
+        <div class="ride-info">
+            <h3><span class="location-label">Dropoff Location:</span></h3>
+            <p id="dropoffLocation">Bhedaghat Jbp</p>
+        </div>
+
+        <div class="ride-info">
+            <h3>Pickup Time:</h3>
+            <p id="pickupTime">Estimated Pickup: 10:30 AM</p>
+        </div>
+        <div class="ride-info">
+            <h3>Vehicle Number:</h3>
+            <p id="vehicleNumber">ABC 1234</p>
+        </div>
+        <div class="ride-info">
+            <h3>Driver's Phone:</h3>
+            <p id="driverPhone">+91 9234 567 890</p>
+        </div>
+
+        <div class="ride-actions">
+            <button class="button" id="callDriverButton" onclick="callDriver()">Call Driver</button>
+            <button class="button cancel" id="cancelRideButton" onclick="cancelRide()">Cancel Ride</button>
+        </div>
+    </div>
+</div>
+
+<!-- Google Maps API Script -->
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap&v=weekly" async></script>
+
+<script>
+    // Initialize the Google Map
+    function initMap() {
+        // Pickup and dropoff locations (lat, lng)
+        const pickupLocation = { lat: 37.7749, lng: -122.4194 }; // San Francisco for example
+        const dropoffLocation = { lat: 37.8044, lng: -122.2711 }; // Oakland for example
+
+        // Create a map centered around the pickup location
+        const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 12,
+            center: pickupLocation,
+        });
+
+        // Add a marker for the pickup location
+        const pickupMarker = new google.maps.Marker({
+            position: pickupLocation,
+            map: map,
+            title: "Pickup Location",
+        });
+
+        // Add a marker for the dropoff location
+        const dropoffMarker = new google.maps.Marker({
+            position: dropoffLocation,
+            map: map,
+            title: "Dropoff Location",
+        });
+
+        // Add a polyline between pickup and dropoff locations
+        const path = new google.maps.Polyline({
+            path: [pickupLocation, dropoffLocation],
+            geodesic: true,
+            strokeColor: "#FF0000",
+            strokeOpacity: 1.0,
+            strokeWeight: 2,
+        });
+        path.setMap(map);
+
+        // Smooth transition effect on map load
+        document.getElementById("map").style.opacity = 1;
+    }
+
+    // Simulate loading and then show ride details
+    setTimeout(() => {
+        // Hide the loading screen
+        document.getElementById('loadingContainer').style.display = 'none';
+        
+        // Show the ride details screen
+        document.getElementById('detailsContainer').style.display = 'flex';
+
+        // Show the ride details section
+        document.getElementById('rideDetails').style.display = 'flex';
+        
+        // Populate the details
+        document.getElementById('pickupLocation').innerText = 'VFJ Jabalpur';
+        document.getElementById('dropoffLocation').innerText = 'Bhedaghat jabalpur';
+        document.getElementById('pickupTime').innerText = 'Estimated Pickup: 10:30 AM';
+        document.getElementById('vehicleNumber').innerText = 'ABC 1234';
+        document.getElementById('driverName').innerText = 'Prakash kumar';
+        document.getElementById('driverPhone').innerText = '+91 9234 567 890';
+        document.getElementById('driverRating').innerText = '4.8 ⭐';
+    }, 3000); // Simulating a 3 seconds wait time to "find a driver"
+
+    // Function to handle calling the driver
+    function callDriver() {
+        window.location.href = 'tel:+1234567890'; // Initiates a phone call to the driver
+    }
+
+    // Function to handle cancelling the ride
+    function cancelRide() {
+        if (confirm('Are you sure you want to cancel the ride?')) {
+            alert('Your ride has been cancelled.');
+            // Logic to cancel the ride in the backend would go here.
+        }
+    }
+</script>
+
+</body>
+</html>
